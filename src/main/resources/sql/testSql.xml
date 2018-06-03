@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="testSql">
+	<resultMap type="testVO" id="memberResultMap">
+		<result property="testCode" column="testcode" jdbcType="VARCHAR"/>
+		<result property="accessCode" column="accessCode" jdbcType="VARCHAR"/>
+		<result property="questionNo" column="questionNo" jdbcType="VARCHAR"/>
+		<result property="title" column="title" jdbcType="VARCHAR"/>
+		<result property="problem" column="problem" jdbcType="VARCHAR"/>
+		<result property="input" column="input" jdbcType="VARCHAR"/>
+		<result property="output" column="output" jdbcType="VARCHAR"/>
+		<result property="exInput" column="exInput" jdbcType="VARCHAR"/>
+		<result property="exOutput" column="exOutput" jdbcType="VARCHAR"/>
+		<result property="gradeInput" column="gradeInput" jdbcType="VARCHAR"/>
+		<result property="gradeOutput" column="gradeOutput" jdbcType="VARCHAR"/>
+		<result property="testTime" column="testTime" jdbcType="VARCHAR"/>
+		<result property="email" column="email" jdbcType="VARCHAR"/>
+		<result property="name" column="name" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<insert id="registerTest" parameterType="testVO">
+		INSERT
+		INTO test
+		VALUES(#{testCode},#{accessCode},#{questionNo},#{title},
+		#{problem},#{input},#{output},#{exInput},#{exOutput},#{gradeInput},
+		#{gradeOutput},#{email},#{name})
+	</insert>
+	
+	<insert id="updateTest" parameterType="testVO">
+		UPDATE test
+		SET title=#{title}, problem=#{problem}, input=#{input},output=#{output},
+		exInput=#{exInput}, exOutput=#{exOutput}, gradeInput=#{gradeInput},
+		gradeOutput=#{gradeOutput}, email=#{email}, name=#{name}
+		WHERE testCode=#{testCode} AND questionNo=#{questionNo}
+	</insert>
+	
+	<select id="getTitle" parameterType="testVO" resultType="string">
+		SELECT title
+		FROM test
+		WHERE testCode=#{testCode}
+	</select>
+	
+	<select id="getTest" parameterType="string" resultType="testVO">
+		SELECT questionNo, title, problem, input, output, exInput, exOutput,
+		gradeInput, gradeOutput, email, name
+		FROM test
+		WHERE testCode=#{testCode}
+	</select>
+	
+	<select id="getProblem" parameterType="testVO" resultType="testVO">
+		SELECT questionNo, title, problem, input, output, exInput, exOutput,
+		gradeInput, gradeOutput, email, name
+		FROM test
+		WHERE testCode=#{testCode} AND questionNo=#{questionNo}
+	</select>
+
+	<insert id="submitCode" parameterType="testVO">
+		INSERT INTO takeTest
+		VALUES (#{email}, #{testCode}, #{title}, #{questionNo}, #{sourceCode}, '컴파일 전', '채점 전')
+	</insert>
+	
+	<update id="updateCode" parameterType="testVO">
+		UPDATE takeTest
+		SET sourceCode = #{sourceCode}
+		WHERE email= #{email} AND testCode = #{testCode} AND questionNo = #{questionNo}
+	</update>
+	
+	<select id="getSubmittedCode" parameterType="testVO" resultType="testVO">
+		SELECT email
+		FROM takeTest
+		WHERE email= #{email} AND testCode = #{testCode} AND questionNo = #{questionNo}
+	</select>
+	
+	<insert id="registerTestResult" parameterType="testVO">
+		INSERT INTO takeTest(testResult)
+		VALUES (#{testResult})
+		WHERE email = #{email} AND testCode = #{testCode} AND questionNo=#{questionNo}
+	</insert>
+	
+	<update id="updateTestResult" parameterType="testVO">
+		UPDATE takeTest
+		SET testResult = #{testResult}
+		WHERE email = #{email} AND testCode = #{testCode} AND questionNo=#{questionNo}
+	</update>
+	
+	<select id="getTestResult" parameterType="testVO" resultType="String">
+		SELECT testResult
+		FROM takeTest
+		WHERE testCode=#{testCode} AND email=#{email} AND questionNo=#{questionNo}
+	</select>
+
+	
+
+
+
+
+
+
+</mapper>

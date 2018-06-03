@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="myPageSql">
+	<resultMap type="testSettingVO" id="testSettingResultMap">
+		<result property="testCode" column="testcode" jdbcType="VARCHAR"/>
+		<result property="accessCode" column="accessCode" jdbcType="VARCHAR"/>
+		<result property="title" column="title" jdbcType="VARCHAR"/>
+		<result property="testTime" column="testTime" jdbcType="VARCHAR"/>
+		<result property="count" column="count" jdbcType="VARCHAR"/>
+		<result property="questionNo" column="questionNo" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<select id="getMakeTest" parameterType="string" resultMap="testSettingResultMap">
+		SELECT testCode, accessCode, title
+		FROM testSetting
+		WHERE author = #{email}
+	</select>
+	
+	<select id="getTakeTest" parameterType="string" resultMap="testSettingResultMap">
+		SELECT testCode, title, questionNo, testResult
+		FROM takeTest
+		WHERE email = #{email}
+	</select>
+	
+	<select id="getAnswerList" parameterType="string" resultType="testVO">
+		SELECT testCode, questionNo, REPLACE(gradeInput,CHR(13)||CHR(10),'\\r\\n') AS gradeInput, gradeOutput, email
+		FROM test
+		where testCode = #{testCode}
+	</select>
+	
+	<select id="getDataList" parameterType="string" resultType="testVO">
+		SELECT testCode, questionNo, sourceCode, email
+		FROM takeTest
+		WHERE testCode= #{testCode}
+	</select>
+	
+	<select id="getSourceCode" parameterType="testVO" resultType="string">
+		SELECT sourceCode
+		FROM takeTest
+		WHERE email=#{email} AND testCode=#{testCode} AND questionNo=#{questionNo}
+	</select>
+	
+	
+</mapper>

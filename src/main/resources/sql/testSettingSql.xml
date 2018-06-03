@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="testSettingSql">
+	<resultMap type="testSettingVO" id="testSettingResultMap">
+		<result property="testCode" column="testcode" jdbcType="VARCHAR"/>
+		<result property="accessCode" column="accessCode" jdbcType="VARCHAR"/>
+		<result property="title" column="title" jdbcType="VARCHAR"/>
+		<result property="testTime" column="testTime" jdbcType="VARCHAR"/>
+		<result property="count" column="count" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="registerTestSetting" parameterType="testSettingVO">
+		INSERT
+		INTO testSetting
+		VALUES(#{testCode},#{accessCode},#{title},#{testTime}, #{count}, #{email})
+	</insert>
+	
+	<select id="getTestSetting" parameterType="string" resultMap="testSettingResultMap">
+		SELECT testCode, accessCode, title, testTime, count
+		FROM testSetting
+		WHERE testCode=#{testCode}
+	</select>
+	
+</mapper>

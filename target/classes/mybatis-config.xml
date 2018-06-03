@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  	<typeAliases>
+		<!-- <typeAlias alias="memberVO" type="com.innodynamics.codePS.model.vo.MemberVO"/> -->
+		<package name="com.innodynamics.codePS.model.vo" />
+	</typeAliases>
+	
+
+
+	
+	
+	<mappers>
+		<mapper resource="sql/memberSql.xml"/>
+		<mapper resource="sql/testSql.xml"/>
+		<mapper resource="sql/testSettingSql.xml"/>
+		<mapper resource="sql/myPageSql.xml"/>
+	</mappers>
+</configuration>
+
+

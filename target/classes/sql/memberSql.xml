@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="memberSql">
+ 
+ <resultMap type="memberVO" id="memberResultMap">
+ 	<result property="email" column="email" jdbcType="VARCHAR"/>
+ 	<result property="password" column="password" jdbcType="VARCHAR"/>
+ 	<result property="studentNo" column="studentNo" jdbcType="VARCHAR"/>
+ 	<result property="name" column="name" jdbcType="VARCHAR"/>
+ </resultMap>
+ 
+ <!-- SQL 구문의 모듈화 -->
+ <sql id="selectMember">
+ 	SELECT
+ 	email, password, studentNo, name
+ 	FROM member
+ </sql>
+ <!-- 모듈화 끝 -->
+ 
+ <insert id="registerMember" parameterType="memberVO">
+ 	INSERT
+ 	INTO member
+ 	VALUES(#{email},#{password},#{studentNo},#{name})
+ </insert>
+ 
+ <select id="emailCheck" parameterType="string" resultType="string">
+ 	SELET email
+ 	FROM member
+ 	WHERE email=#{value}
+ </select>
+ 
+ <select id="login" parameterType="memberVO" resultMap="memberResultMap">
+ 	<include refid="selectMember"/>
+ 	WHERE email=#{email} AND password=#{password}
+ </select>
+ 
+ <update id="updateMember" parameterType="memberVO">
+ 	UPDATE member SET
+ 	password = #{password},
+ 	name=#{name}
+ 	WHERE email=#{email}
+ </update>
+ 
+ <select id="getAllMember" resultMap="memberResultMap">
+ 	<include refid="selectMember"/>
+ </select>
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</mapper>
